@@ -33,15 +33,14 @@ class RegionService
     }
 
     /**
-     * @param array $data
-     * @return Store
      * @throws BindingResolutionException
      */
-    public function store(array $data): Store
+    public function store(array $data)
     {
         $region = app()->make(Region::class);
         $region->fill($data);
         $region->save();
+
         return $region;
     }
 
@@ -75,7 +74,8 @@ class RegionService
     {
         $data = $request->all();
         $rules = [
-            "name" => "required | string",
+            "city" => "required | string",
+            "country" => "required | string"
         ];
 
         return Validator::make($data, $rules);

@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('regions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('city');
+            $table->string('country');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
     /**
-     * Reverse the migrations.
-     *
      * @return void
      */
     public function down()

@@ -17,7 +17,18 @@ class StoreService
      */
     public function getStoreList(Carbon $startTime): array
     {
-        $data = Store::with('regions')->get();
+        $data = Store::select('id', 'name', 'contact_number', 'description')
+                ->with(['regions' => function($query) {
+                    $query->select('city', 'country');
+                }])
+                ->get();
+
+        // remove the pivot key from each item in the collection
+        $data->each(function($store) {
+            $store->regions->each(function ($region) {
+                unset($region->pivot);
+            });
+        });
 
         $response = [
             "data" => $data,
@@ -77,6 +88,8 @@ class StoreService
         $data = $request->all();
         $rules = [
             "name" => "required | string",
+            "contact_number" => "required | string",
+            "description" => "required | string",
             "region" => "required | integer",
         ];
 
