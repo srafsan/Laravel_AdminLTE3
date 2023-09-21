@@ -10,8 +10,8 @@ class Store extends Model
 {
     use HasFactory;
 
-    protected $guarded = ["id"];
     protected $table = "stores";
+    protected $guarded = ['id', 'created_at', 'updated_at', 'deleted_at'];
 
     public function regions(): BelongsToMany
     {

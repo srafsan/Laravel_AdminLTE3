@@ -22,31 +22,17 @@ class StoreController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $filter = $this->storeService->filterValidator($request)->validate();
-        $response = $this->storeService->getStoreList($filter, $this->startTime);
-
-        $data = Store::with('regions')->get();
-
-        $response = [
-            "data" => $data,
-            "_response_status" => [
-                "success" => true,
-                "code" => ResponseAlias::HTTP_OK,
-                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-            ]
-        ];
+        $response = $this->storeService->getStoreList($this->startTime);
         return Response::json($response,ResponseAlias::HTTP_OK);
     }
 
     public function store(Request $request): JsonResponse
     {
-        $regions = [1, 2];
-        $stores = new Store();
-        $stores->name = $request->name;
-        $stores->save();
-        $stores->regions()->attach($regions);
+        $validated = $this->storeService->validator($request)->validate();
+        $data = $this->storeService->store($validated);
 
         $response = [
+            "data" => $data,
             "response" => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_CREATED,
