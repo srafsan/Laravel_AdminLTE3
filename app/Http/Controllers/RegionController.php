@@ -3,42 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Region;
+use App\Services\RegionService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
-class RegionsController extends Controller
+class RegionController extends Controller
 {
+    protected RegionService $regionService;
     private Carbon $startTime;
 
-    public function __construct() {
+    public function __construct(RegionService $regionService) {
+        $this->regionService = $regionService;
         $this->startTime = Carbon::now();
     }
 
     public function index(): JsonResponse
     {
-        $data = Region::with('stores')->get();
-
-        $response = [
-            "data" => $data,
-            "_response_status" => [
-                "success" => true,
-                "code" => ResponseAlias::HTTP_OK,
-                "query_time" => $this->startTime->diffInSeconds(Carbon::now())
-            ]
-        ];
+        $response = $this->regionService->getRegionList($this->startTime);
         return Response::json($response,ResponseAlias::HTTP_OK);
     }
 
     public function store(Request $request): JsonResponse
     {
-        $region = new Region();
-        $region->name = $request->name;
-        $region->save();
+        $validated = $this->regionService->validator($request)->validate();
+        $data = $this->regionService->store($validated);
 
         $response = [
+            "data" => $data,
             "response" => [
                 "success" => true,
                 "code" => ResponseAlias::HTTP_CREATED,

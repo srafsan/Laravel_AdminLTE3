@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\RegionsController;
+use App\Http\Controllers\RegionController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +20,4 @@ Route::get('/', static function () {
 });
 
 Route::resource('stores', StoreController::class);
-Route::resource('regions', RegionsController::class);
+Route::resource('regions', RegionController::class);

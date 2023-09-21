@@ -8,9 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
-/**
- *
- */
 class StoreService
 {
     /**
@@ -33,15 +30,47 @@ class StoreService
         return $response;
     }
 
-    public function store(array $data): mixed
+    /**
+     * @param array $data
+     * @return Store
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function store(array $data): Store
     {
-        $stores = app()->make(Store::class);
-        $stores->fill($data);
-        $stores->save();
-        $stores->regions()->attach($data['region']);
-        return $stores;
+        $store = app()->make(Store::class);
+        $store->fill($data);
+        $store->save();
+        $store->regions()->attach($data['region']);
+        return $store;
     }
 
+    /**
+     * @param Store $stores
+     * @param array $data
+     * @return Store
+     */
+    public function update(Store $store, array $data): Store
+    {
+        $store->fill($data);
+        $store->update();
+        $store->regions()->sync($data['region']);
+        return $store;
+    }
+
+    /**
+     * @param Store $stores
+     * @return bool
+     */
+    public function destroy(Store $store): bool
+    {
+        $store->regions()->detach();
+        return $store->delete();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Validation\Validator
+     */
     public function validator(Request $request): \Illuminate\Validation\Validator
     {
         $data = $request->all();
