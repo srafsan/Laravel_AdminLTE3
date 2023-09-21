@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Store;
 use Carbon\Carbon;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -33,7 +34,7 @@ class StoreService
     /**
      * @param array $data
      * @return Store
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     public function store(array $data): Store
     {
@@ -45,7 +46,7 @@ class StoreService
     }
 
     /**
-     * @param Store $stores
+     * @param Store $store
      * @param array $data
      * @return Store
      */
@@ -58,7 +59,7 @@ class StoreService
     }
 
     /**
-     * @param Store $stores
+     * @param Store $store
      * @return bool
      */
     public function destroy(Store $store): bool

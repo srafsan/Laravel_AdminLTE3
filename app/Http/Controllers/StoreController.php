@@ -74,9 +74,9 @@ class StoreController extends Controller
      */
     public function update(Request $request, $id): JsonResponse
     {
-        $stores = Store::findOrFail($id);
+        $store = Store::findOrFail($id);
         $validated = $this->storeService->validator($request)->validate();
-        $data = $this->storeService->update($stores, $validated);
+        $data = $this->storeService->update($store, $validated);
 
         $response = [
             "data" => $data,
@@ -97,8 +97,8 @@ class StoreController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        $stores = Store::findOrFail($id);
-        $this->storeService->destroy($stores);
+        $store = Store::findOrFail($id);
+        $this->storeService->destroy($store);
 
         $response = [
             "response" => [
