@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
@@ -19,5 +21,9 @@ Route::get('/', static function () {
     return view('welcome');
 });
 
-Route::resource('stores', StoreController::class);
-Route::resource('regions', RegionController::class);
+Route::group(['prefix' => 'api/v1'], function() {
+    Route::resource('stores', StoreController::class);
+    Route::resource('regions', RegionController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('products', ProductController::class);
+});
