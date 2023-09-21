@@ -44,16 +44,29 @@ class RegionController extends Controller
         return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
-    public function update(Request $request, $id): void
+    public function update(Request $request, $id): JsonResponse
     {
-        //
+        $region = Region::findOrFail($id);
+        $validated = $this->regionService->validator($request)->validate();
+        $data = $this->regionService->update($region, $validated);
+
+        $response = [
+            "data" => $data,
+            "response" => [
+                "success" => true,
+                "code" => ResponseAlias::HTTP_OK,
+                "message" => "Region Updated Successfully",
+                "query_time" => $this->startTime->diffInSeconds(Carbon::now()),
+            ],
+        ];
+
+        return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
     public function destroy($id): JsonResponse
     {
-        $stores = Region::findOrFail($id);
-        $stores->regions()->detach();
-        $stores->delete();
+        $region = Region::findOrFail($id);
+        $this->regionService->destroy($region);
 
         $response = [
             "response" => [
@@ -65,6 +78,5 @@ class RegionController extends Controller
         ];
 
         return Response::json($response, ResponseAlias::HTTP_CREATED);
-
     }
 }
