@@ -43,11 +43,10 @@ class StoreController extends Controller
 
     /**
      * @param Request $request
-     * @return JsonResponse
      * @throws BindingResolutionException
      * @throws ValidationException
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $validated = $this->storeService->validator($request)->validate();
         $data = $this->storeService->store($validated);
@@ -62,7 +61,8 @@ class StoreController extends Controller
             ],
         ];
 
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+        return redirect('/');
+        //return Response::json($response, ResponseAlias::HTTP_CREATED);
 
     }
 
@@ -91,11 +91,7 @@ class StoreController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
-    /**
-     * @param $id
-     * @return JsonResponse
-     */
-    public function destroy($id): JsonResponse
+    public function destroy($id)
     {
         $store = Store::findOrFail($id);
         $this->storeService->destroy($store);
@@ -109,6 +105,7 @@ class StoreController extends Controller
             ],
         ];
 
-        return Response::json($response, ResponseAlias::HTTP_CREATED);
+        return redirect('/store-lists');
+        //return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 }

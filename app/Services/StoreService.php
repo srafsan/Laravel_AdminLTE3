@@ -90,7 +90,7 @@ class StoreService
             "name" => "required | string",
             "contact_number" => "required | string",
             "description" => "required | string",
-            "region" => "required | integer",
+            "region" => "required | string",
         ];
 
         return Validator::make($data, $rules);

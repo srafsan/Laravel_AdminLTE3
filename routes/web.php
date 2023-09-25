@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\StoreController;
+use App\Models\Store;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,9 +19,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', static function () {
+Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/admin', function () {
+    return view('admin');
+});
+
+Route::get('/store-lists', function () {
+    $lists = Store::all();
+    return view('store.allStore', ['data' => $lists]);
+});
+Route::get('/add-store' , function () {
+    return view('store.addStore');
+});
+Route::get('/update-store/{id}', function($id) {
+    $list = Store::findOrFail($id);
+    return view('store.updateStore', ['store' => $list]);
+})->name('updateStore');
 
 Route::group(['prefix' => 'api/v1'], function() {
     Route::resource('stores', StoreController::class);
