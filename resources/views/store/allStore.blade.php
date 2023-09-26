@@ -24,11 +24,11 @@
                     <a href="{{route('updateStore', $store->id)}}">
                         <button class="btn btn-outline-primary">Update</button>
                     </a>
-                    <form action="{{route('stores.destroy', $store->id)}}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger">Delete</button>
-                    </form>
+                    <button data-id="{{$store->id}}" class="btn btn-danger deleteStoreBtn">Delete</button>
+{{--                    <form action="{{route('stores.destroy', $store->id)}}" method="POST">--}}
+{{--                        @csrf--}}
+{{--                        @method('DELETE')--}}
+{{--                    </form>--}}
                 </td>
             </tr>
         @endforeach

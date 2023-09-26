@@ -74,5 +74,27 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="/dist/js/pages/dashboard.js"></script>
 
+
+    <script>
+        $(document).ready(function () {
+            $(".deleteStoreBtn").click(function (){
+                let storeId = $(this).data("id");
+                let element = this;
+
+                $.ajax({
+                    url: `api/v1/stores/${storeId}`,
+                    type: "DELETE",
+                    data: {id: storeId},
+                    success: function (data) {
+                        if(data) {
+                            $(element).closest("tr").fadeOut();
+                        } else {
+                            alert('Not deleted successfully');
+                        }
+                    }
+                })
+            })
+        })
+    </script>
 </body>
 </html>
