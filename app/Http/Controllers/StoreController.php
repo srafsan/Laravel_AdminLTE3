@@ -6,6 +6,9 @@ use App\Models\Store;
 use App\Services\StoreService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -31,22 +34,19 @@ class StoreController extends Controller
         $this->startTime = Carbon::now();
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function index(): JsonResponse
+    public function index()
     {
-        $response = $this->storeService->getStoreList($this->startTime);
-        return Response::json($response,ResponseAlias::HTTP_OK);
+        $lists = Store::all();
+        return view('store.allStore', ['data' => $lists]);
     }
 
     /**
      * @param Request $request
+     * @return JsonResponse
      * @throws BindingResolutionException
      * @throws ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $validated = $this->storeService->validator($request)->validate();
         $data = $this->storeService->store($validated);
@@ -61,9 +61,7 @@ class StoreController extends Controller
             ],
         ];
 
-        return redirect('/');
-        //return Response::json($response, ResponseAlias::HTTP_CREATED);
-
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 
     /**
@@ -91,7 +89,11 @@ class StoreController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
-    public function destroy($id)
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function destroy($id): JsonResponse
     {
         $store = Store::findOrFail($id);
         $this->storeService->destroy($store);
@@ -105,7 +107,6 @@ class StoreController extends Controller
             ],
         ];
 
-        return redirect('/store-lists');
-        //return Response::json($response, ResponseAlias::HTTP_CREATED);
+        return Response::json($response, ResponseAlias::HTTP_CREATED);
     }
 }

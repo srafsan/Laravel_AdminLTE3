@@ -34,7 +34,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header">STORE</li>
                 <li class="nav-item">
-                    <a href="/store-lists" class="nav-link {{request()->is('store-lists*') ? 'active' : ''}}">
+                    <a href="/stores" class="nav-link {{request()->is('stores*') ? 'active' : ''}}">
                         <i class="nav-icon fas fa-columns"></i>
                         <p>
                             Store List
