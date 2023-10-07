@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\PostcardService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->singleton('Postcard', function ($app) {
+            return new PostcardService("us", 23, 10);
+        });
     }
 }
