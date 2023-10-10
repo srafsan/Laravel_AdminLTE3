@@ -1,19 +1,59 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+class Fish {
+    public function swim()
+    {
+        return 'swimming';
+    }
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+    public function eat()
+    {
+        return 'eating';
+    }
+}
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+app()->bind('fish', function () {
+    return new Fish();
 });
+
+//$fish = new Fish();
+//dd($fish->swim());
+
+class Bike {
+    public function start()
+    {
+        return 'starting';
+    }
+}
+
+app()->bind('bike', function() {
+    return new Bike();
+});
+
+class Facade {
+    public static function __callStatic($name, $args)
+    {
+        return app()->make(static::getFacadeAccessor())->$name();
+    }
+
+//    protected static function getFacadeAccessor()
+//    {
+//
+//    }
+}
+
+class FishFacade extends Facade {
+    protected static function getFacadeAccessor()
+    {
+        return 'fish';
+    }
+}
+class BikeFacade extends Facade{
+    protected static function getFacadeAccessor()
+    {
+        return 'bike';
+    }
+}
+
+
+dd(FishFacade::eat());
