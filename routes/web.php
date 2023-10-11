@@ -7,6 +7,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\PayOrderController;
+use App\Http\Middleware\EnsureTokenIsValid;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,8 +22,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+//Route::get('/', function () {
+//    return "hello";
+//})->middleware(EnsureTokenIsValid::class);
+
+Route::middleware([EnsureTokenIsValid::class])->group(function () {
+    Route::get('/', function () {
+        return "hello";
+    });
+});
+
+Route::post('/t', function (Request $request) {
+    dd($request->boolean('bool'));
+    return "testing";
 });
 
 Route::resource('stores', StoreController::class);
