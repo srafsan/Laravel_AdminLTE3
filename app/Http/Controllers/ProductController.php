@@ -44,6 +44,15 @@ class ProductController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
+    public function show($id)
+    {
+        $product = Product::find($id);
+        //dd($product->categories);
+        foreach ($product->categories as $pc) {
+            dd($pc->subscription->product_id);
+        }
+    }
+
     /**
      * @throws ValidationException
      * @throws BindingResolutionException

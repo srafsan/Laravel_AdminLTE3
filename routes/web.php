@@ -26,16 +26,18 @@ use Illuminate\Support\Facades\Route;
 //    return "hello";
 //})->middleware(EnsureTokenIsValid::class);
 
-Route::middleware([EnsureTokenIsValid::class])->group(function () {
-    Route::get('/', function () {
-        return "hello";
-    });
-});
+//Route::middleware([EnsureTokenIsValid::class])->group(function () {
+//    Route::get('/', function () {
+//        return "hello";
+//    });
+//});
 
-Route::post('/t', function (Request $request) {
-    dd($request->boolean('bool'));
-    return "testing";
-});
+//Route::post('/t', function (Request $request) {
+//    dd($request->boolean('bool'));
+//    return "testing";
+//});
+
+Route::redirect('/', '/stores');
 
 Route::resource('stores', StoreController::class);
 Route::resource('regions', RegionController::class);
